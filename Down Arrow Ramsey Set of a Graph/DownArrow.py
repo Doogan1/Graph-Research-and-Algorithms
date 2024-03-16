@@ -1,5 +1,7 @@
+import matplotlib.pyplot as plt
 import networkx as nx
 import numpy as np
+import json
 
 #We first define a utility function that takes a list of graphs and produces
 #a list of graphs which represent the distinct isomorphism classes of the given list of graphs
@@ -7,7 +9,7 @@ import numpy as np
 #is_isomorphic function
 
 #takes a list of graphs L and an empty array E.  The array E will eventually be returned when the unique graphs under graph isomorphism is built
-def graphs_to_reps(L, E=[]):
+def graphs_to_reps(L, E):
     if len(L) == 0:
         return E
     S = L.copy()
@@ -51,11 +53,42 @@ for H in L:
 #Takes a graph and a list of graphs and returns true if g is isomorphic to a graph h in the list
 #L is a list of pairs of graphs in the list together with the vertex they are associated with in the poset of graphs
 #this is to be used in a later function, so it's okay if one does not understand now what exactly is the function of L
+"""
 def Iso_Check_List(G, L): 
     for p in L:
         if nx.is_isomorphic(p[0], G):
             return (True, p[1])
     return (False, nx.empty_graph(0))
+"""
+
+def is_iso_any_list(G, L, return_index = True):
+    i = 0
+    for H in L:
+        if nx.is_isomorphic(G,H):
+            if return_index:
+                return [True, i]
+            else:
+                return True
+        i += 1
+    if return_index:
+        return [False, i]
+    else:
+        return False
+
+def are_isomorphic(G,H):
+    return nx.is_isomorphic(G,H)
+
+#the boolean function in the argument of the following function should operate on the values of the attribute key and return True or False
+def contract_if(G, u, v, attribute_key, boolean_function):
+    attr_val_u = G.nodes[u].get(attribute_key)
+    attr_val_v = G.nodes[v].get(attribute_key)
+
+    if boolean_function(attr_val_u, attr_val_v):
+        G = nx.contracted_nodes(G, u, v, self_loops=False)
+    
+    return G
+    
+    
 
 #the code below is a reminder of node attributes and demonstrates that one can set node attributes to be graphs themselves,
 #this will be of use in the next function which returns a poset (represented here as a graph) whose node attributes are graphs
@@ -72,45 +105,83 @@ for v in G.nodes():
     print(graphs[v])
 """
 
-
+#looks at each of the nodes representing graphs of size m and generates new nodes representing the edge deleted subgraphs of the node
+#then it merges the nodes representing graphs of size m-1 based on graph isomorphism
 def Graph_Ideal(G, D, m):
     n = G.order()
-    print(m)
+    #diagnostic print(m)
     if m == 0: #this corresponds to the last level of the poset.  when we get here, we are done and we can return the poset of graphs D
         return D
     if D.order() == 0: #this is the first thing that will happen when this function is called as D will be an empty graph to begin with
         D.add_node("0", graph = G)
         return Graph_Ideal(G, D, G.size())
-    #similar to the iso_check_list function, L will be a set of pairs of graph together with label
-    L= []
     i = 0
     graphs = nx.get_node_attributes(D, "graph") #graphs is a dictionary of "vtxName":associatedGraph, this is used to obtain the graph which is acting as a label of the node in D
-    D_copy = D.copy()
-    for v in D_copy.nodes():
-        graph = graphs[v] #graph is the graph corresponding to node v in D
-        if graph.size() == m: #let's only look at the graphs that match the "level" that we are on
-            T = graphs_to_reps(edge_deleted_subgraphs(graph)) #get the distinct edge deleted subgraphs up to isomorphism
-            for G in T:
-                #it is possible (and likely) that another graph of size m has an edge deleted subgraph which is isomorphic to an edge deleted subgraph of the current graph.  so, we need to filter these out as well.
-                is_copy = Iso_Check_List(G,L)[0]
-                label = Iso_Check_List(G,L)[1]
-                #if G is distinct from the graphs already "contained" in D, we will add a new vertex to D and store the graph G as the label of that vertex
-                if not is_copy:
-                    D.add_node(v + str(i), graph=G) 
-                    D.add_edge(v,v+str(i))
-                    L.append((G,v+str(i)))  # add it to L so that we can check against it later
-                else: #so, if G is isomorphic to a graph already appearing in D, then add an edge between this vertex and the vertex representing G
-                    D.add_edge(v,label)
-                i+=1
+    #diagnostic print([data for node, data in D.nodes(data=True)])
+    current_level_nodes = [node for node, data in D.nodes(data=True) if data["graph"].size() == m]
+    next_level_nodes_and_graphs = []
+    for u in current_level_nodes:
+        H = graphs[u]
+        next_level_u_graphs = graphs_to_reps(edge_deleted_subgraphs(H), [])
+        #diagnostic print(f"There are {len(next_level_u_graphs)} next level graphs coming from vertex {u} before paring")
+        for F in next_level_u_graphs:
+            [is_iso, j] = is_iso_any_list(F, [p[1] for p in next_level_nodes_and_graphs])
+            if is_iso:
+                iso_node = next_level_nodes_and_graphs[j][0]
+                D.add_edge(u, iso_node)
+            else:
+                new_node = u + "-" + str(i)
+                D.add_node(new_node, graph=F)
+                D.add_edge(u, new_node)
+                i += 1
+                next_level_nodes_and_graphs.append([new_node, F])
     return Graph_Ideal(G,D,m-1) #decrease m to work on the next level of the poset
 
-G = nx.complete_graph(5)
+#this function will help us visualize the resulting digraph
+def calculate_positions(graph):
+    positions = {}
+    levels = {}  # Keeps track of the number of nodes at each level
 
-P = Graph_Ideal(G, nx.DiGraph(), 1)
+    for node in graph.nodes():
+        level = node.count('-') + 1  # Determine level by string length
+        if level not in levels:
+            levels[level] = 0
+        positions[node] = (levels[level], -level * 10)  # X position is based on how many nodes are already at this level, Y is negative level
+        levels[level] += 1  # Increment count of nodes at this level
 
-graphs = nx.get_node_attributes(P, "graph")
+    # Center align nodes in each level
+    max_width = max(levels.values())
+    for node, (x, y) in positions.items():
+        level_width = levels[node.count('-') + 1]
+        offset = (max_width - level_width) / 2
+        positions[node] = (x + offset, y)
+    return positions
 
-nx.draw(graphs["0"])
-
-
+#this function takes a networkX graph and turns it into a json object
+#graph={vertices, edges}, where vertices has the form vertex: {position: {x,y}} and edges has the form {[source, target]}
+def graph_to_json_structure(G):
+    vertices = {}
+    pos_dict = nx.spring_layout(G)
+    for u in G.nodes():
+        vertices[u] = {'position': {'x': pos_dict[u][0],'y': pos_dict[u][1]}}
     
+    edges = list(G.edges())
+    return {'vertices': vertices, 'edges': edges}
+
+#this function will convert the ideal to json and incorporate the json structure of the associated graphs using graph_to_json_structure
+def build_and_print_json(P):
+    json_data = {'vertices': {}, 'edges': list(P.edges())}
+    pos = calculate_positions(P)
+    for node, data in P.nodes(data=True):
+        nested_graph = data['graph']
+        json_data['vertices'][node] = {
+            'position': {
+                'x': pos[node][0],
+                'y': pos[node][1]
+            },
+            'associated_graph': graph_to_json_structure(nested_graph)
+        }
+
+    json_str = json.dumps(json_data, indent=2)
+    with open('graph_data.json', 'w') as f:
+        json.dump(json_data, f, indent=2)

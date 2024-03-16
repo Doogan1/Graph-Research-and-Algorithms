@@ -164,14 +164,27 @@ const drawGraph = (graphData, svgId, normalize = true) => {
     }
 }
 
-const attachClickHandlers = (graphData) => {
+const attachClickHandlers = (graphData, ramseyData) => {
     const svg = document.getElementById('graph-container');
     const associatedGraphLabel = document.getElementById('associated-graph-container-label');
     const spreadHorizBtn = document.getElementById('spread-horizontal-btn');
+    const ramseyBtn = document.getElementById('show-ramsey-btn');
 
     spreadHorizBtn.addEventListener('click', event => {
         spreadOutVerticesHorizontal(graphData);
     });
+
+    ramseyBtn.addEventListener('click', () => {
+        const toHighlight = ramseyData.toHighlight;
+        console.log(toHighlight);
+        toHighlight.forEach(id => {
+            const vertex = svg.querySelector(`circle[data-key="${id}"]`);
+            if (vertex) vertex.classList.add('active');
+        });
+        //drawGraph(graphData, 'graph-container', false)
+    })
+
+    
 
     svg.addEventListener('click', event => {
         if (event.target && event.target.nodeName === 'circle') {
@@ -269,7 +282,9 @@ function setupZoomAndPan(svgId) {
 document.addEventListener('DOMContentLoaded', async () => {
     const res = await fetch('graph_data.json');
     const graphData = await res.json();
+    const res2 = await fetch('ramsey_set.json');
+    const ramseyData = await res2.json();
     drawGraph(graphData, 'graph-container');
-    attachClickHandlers(graphData);
+    attachClickHandlers(graphData, ramseyData);
     setupZoomAndPan('graph-container');
 });

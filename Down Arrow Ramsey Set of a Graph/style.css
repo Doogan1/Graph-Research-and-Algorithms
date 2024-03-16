@@ -1,0 +1,74 @@
+#graph-container {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#svg-container {
+    display: flex;
+    flex-direction: row;
+}
+
+h1 {
+    font-size: 100px;
+}
+
+h2 {
+    font-size: 35px;
+    text-align: center;
+}
+
+#associated-graph-container {
+    background-color: #f0f0f0;
+    border: 1px solid black;
+}
+
+button {
+    width: fit-content;
+}
+#graph-container-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#associated-graph-div {
+    display: flex;
+    flex-direction: column;
+    width: 800px;
+    align-items: center;
+    justify-content: center;
+}
+label {
+    font-size: 35px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.circle {
+    fill: steelblue;
+    cursor: pointer;
+}
+
+.circle.active {
+    fill: red;
+}
+
+.circle:hover {
+    fill: orangered;
+}
+.line {
+    stroke: #666;
+    stroke-width: 2px;
+}
+
+.vertex-id {
+    font-size: 10px;
+}

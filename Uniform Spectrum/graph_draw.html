@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graph Ideal Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 id="title">Uniform Spectrum Visualizer</h1>
+    <h2 id="subtitle">Select a graph.</h2>
+    <h2>Click "Show Uniform Spectrum" to see the set of all k for which there exists at least one path of length k between every pair of vertices in the selected graph.</h2>
+    <h2>Click "Play Proof" to visualize a proof that this is the uniform spectrum.</h2>
+    <div id="svg-container">
+        <div id="graph-container-div">
+            <label for="graph-select">Select a graph or a graph family along with parameters</label>
+                <select id="graph-select" name="graph-select">
+                    <option value="petersen_graph" name="graph-select" selected>Petersen Graph</option>
+                    <option value="tutte_graph" name="graph-select">Tutte Graph</option>
+                    <option value="heawood_graph" name="graph-select">Heawood Graph</option>
+                    <option value="bull_graph" name="graph-select">Bull Graph</option>
+                    <option value="chvatal_graph" name="graph-select">Chvatal Graph</option>
+                    <option value="cubical_graph" name="graph-select">Cube</option>
+                    <option value="desargues_graph" name="graph-select">Desargues Graph</option>
+                    <option value="diamond_graph" name="graph-select">Diamond Graph</option>
+                    <option value="dodecahedral_graph" name="graph-select">Dodecahedron</option>
+                    <option value="frucht_graph" name="graph-select">Frucht Graph</option>
+                    <option value="hoffman_singleton_graph" name="graph-select">Hoffman-Singleton Graph</option>
+                    <option value="house_graph" name="graph-select">House Graph</option>
+                    <option value="icosahedral_graph" name="graph-select">Icosahedron</option>
+                    <option value="krackhardt_kite_graph" name="graph-select">Krackhardt Kite</option>
+                    <option value="moebius_kantor_graph" name="graph-select">Moebius-Kantor Graph</option>
+                    <option value="octahedral_graph" name="graph-select">Octahedron</option>
+                    <option value="pappus_graph" name="graph-select">Pappus Graph</option>
+                    <option value="sedgewick_maze_graph" name="graph-select">Sedgewick Maze</option>
+                    <option value="tetrahedral_graph" name="graph-select">Tetrahedron</option>
+                    <option value="truncated_cube_graph" name="graph-select">Truncated Cube</option>
+                    <option value="truncated_tetrahedron_graph" name="graph-select">Truncated Tetrahedron</option>
+                    <option value="complete_graph" name="graph-family-select">Complete Graph K(n)</option>
+                    <option value="complete_bipartite_graph" name="graph-family-select">Complete Bipartite Graph K(n,m)</option>
+                </select>
+                <div id="parameter-container"></div>
+            <button id="show-graph-btn">Show Graph</button>
+            <button id="show-unispect-btn">Show Uniform Spectrum</button>
+            <button id="play-btn">Play Proof</button>
+            <svg id="graph-container" width="1500" height="1500" viewBox="0 0 1500 1500"></svg>
+        </div>
+        <div id="associated-graph-div">
+            <label for="associated-graph-container" id="associated-graph-container-label"></label>
+            <svg id="associated-graph-container" width="600" height="450"></svg>
+        </div>
+    </div>
+    
+    
+    <script src="script.js"></script>
+</body>
+</html>

@@ -61,7 +61,7 @@ const updateCurrentGraph = async () => {
                 return;
             }
         }
-        const res = await fetch(`/graphs/complete_bipartite_graph_${parameterArr[0]}_${parameterArr[1]}_data.json`);
+        const res = await fetch(`Graph-Research-and-Algorithms/Down%20Arrow%20Ramsey%20Set%20of%20a%20Graph/graphs/complete_bipartite_graph_${parameterArr[0]}_${parameterArr[1]}_data.json`);
         const graphData = await res.json();
         currentGraph['graphData'] = graphData;
             //reset();
@@ -409,7 +409,7 @@ const setInitialViewbox = (svgId) => {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const res = await fetch('/graphs/complete_graph_6_data.json');
+    const res = await fetch('Graph-Research-and-Algorithms/Down%20Arrow%20Ramsey%20Set%20of%20a%20Graph/graphs/complete_graph_6_data.json');
     const graphData = await res.json();
     currentGraph['graphData'] = graphData;
     //diagnostic console.log(currentGraph['graphData']);

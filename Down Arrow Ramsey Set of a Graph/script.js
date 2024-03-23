@@ -409,7 +409,7 @@ const setInitialViewbox = (svgId) => {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const res = await fetch('https://doogan1.github.io/Graph-Research-and-Algorithms/Down%20Arrow%20Ramsey%20Set%20of%20a%20Graph/Down%20Arrow%20Ramsey%20Set%20of%20a%20Graph/graphs/complete_graph_6_data.json');
+    const res = await fetch('https://doogan1.github.io/Graph-Research-and-Algorithms/Down%20Arrow%20Ramsey%20Set%20of%20a%20Graph/graphs/complete_graph_6_data.json');
     const graphData = await res.json();
     currentGraph['graphData'] = graphData;
     //diagnostic console.log(currentGraph['graphData']);

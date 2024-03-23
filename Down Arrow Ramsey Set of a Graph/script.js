@@ -409,7 +409,7 @@ const setInitialViewbox = (svgId) => {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
-    const res = await fetch('Down Arrow Ramsey Set of a Graph/graphs/complete_graph_6_data.json');
+    const res = await fetch('/graphs/complete_graph_6_data.json');
     const graphData = await res.json();
     currentGraph['graphData'] = graphData;
     //diagnostic console.log(currentGraph['graphData']);

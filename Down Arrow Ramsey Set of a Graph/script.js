@@ -29,7 +29,7 @@ const updateCurrentGraph = async () => {
             [...parameterInputs][0].value = "";
             return;
         } 
-        const res = await fetch(`Down Arrow Ramsey Set of a Graph/graphs/${selectedGraph}_${parameterArr[0]}_data.json`);
+        const res = await fetch(`https://doogan1.github.io/Graph-Research-and-Algorithms/Down%20Arrow%20Ramsey%20Set%20of%20a%20Graph/graphs/${selectedGraph}_${parameterArr[0]}_data.json`);
         const graphData = await res.json();
         currentGraph[`graphData`] = graphData;
             //reset();
@@ -61,7 +61,7 @@ const updateCurrentGraph = async () => {
                 return;
             }
         }
-        const res = await fetch(`Down Arrow Ramsey Set of a Graph/graphs/complete_bipartite_graph_${parameterArr[0]}_${parameterArr[1]}_data.json`);
+        const res = await fetch(`https://doogan1.github.io/Graph-Research-and-Algorithms/Down%20Arrow%20Ramsey%20Set%20of%20a%20Graph/graphs/complete_bipartite_graph_${parameterArr[0]}_${parameterArr[1]}_data.json`);
         const graphData = await res.json();
         currentGraph['graphData'] = graphData;
             //reset();
@@ -72,7 +72,7 @@ const updateCurrentGraph = async () => {
         //setupZoomAndPan('graph-container');
     } else {
         showRamseyBtn.disabled = true;
-        const res = await fetch(`Down Arrow Ramsey Set of a Graph/graphs/${selectedGraph}_data.json`);
+        const res = await fetch(`https://doogan1.github.io/Graph-Research-and-Algorithms/Down%20Arrow%20Ramsey%20Set%20of%20a%20Graph/graphs/${selectedGraph}_data.json`);
         const graphData = await res.json();
         currentGraph['graphData'] = graphData;
             //reset();

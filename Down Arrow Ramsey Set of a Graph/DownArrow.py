@@ -170,8 +170,9 @@ def graph_to_json_structure(G):
     return {'vertices': vertices, 'edges': edges}
 
 #this function will convert the ideal to json and incorporate the json structure of the associated graphs using graph_to_json_structure
-def build_and_print_json(P):
-    json_data = {'vertices': {}, 'edges': list(P.edges())}
+def build_and_print_json(G,name):
+    P = Graph_Ideal(G, nx.DiGraph(), 1) #generate the ideal
+    json_data = {'vertices': {}, 'edges': list(P.edges()), 'ramsey_set': []}
     pos = calculate_positions(P)
     for node, data in P.nodes(data=True):
         nested_graph = data['graph']
@@ -182,9 +183,10 @@ def build_and_print_json(P):
             },
             'associated_graph': graph_to_json_structure(nested_graph)
         }
-
+    if nx.is_isomorphic(G,nx.complete_graph(G.order())):
+        json_data['ramsey_set'] = list(down_arrow_ramsey_set(G))
     json_str = json.dumps(json_data, indent=2)
-    with open('graph_data.json', 'w') as f:
+    with open(f'{name}_data.json', 'w') as f:
         json.dump(json_data, f, indent=2)
 
 
@@ -234,3 +236,13 @@ def down_arrow_ramsey_set(G):
         #diagnostic print(f"About to intersect {ideal} and {coloring}")
         colorings[0] = ideal.intersection(coloring)
     return colorings[0]
+
+def ramsey_set_to_json(G):
+    #compute the ramsey set of the graph and build its json
+    ramsey_set = down_arrow_ramsey_set(G)
+
+    json_ramsey_set = {'toHighlight': list(ramsey_set)}
+
+    json_str = json.dumps(json_ramsey_set, indent=2)
+    with open('ramsey_set.json', 'w') as f:
+        json.dump(json_ramsey_set, f, indent=2)

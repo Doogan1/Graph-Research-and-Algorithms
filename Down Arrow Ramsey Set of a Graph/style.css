@@ -1,19 +1,9 @@
-#graph-container {
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-}
-
+/* Global Styles */
 body {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-}
-
-#svg-container {
-    display: flex;
-    flex-direction: row;
 }
 
 h1 {
@@ -25,36 +15,55 @@ h2 {
     text-align: center;
 }
 
-#associated-graph-container {
-    background-color: #f0f0f0;
-    border: 1px solid black;
-}
-
-button {
+button, label {
     width: fit-content;
-}
-#graph-container-div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-#associated-graph-div {
-    display: flex;
-    flex-direction: column;
-    width: 800px;
-    align-items: center;
-    justify-content: center;
-}
-label {
-    font-size: 35px;
+    font-size: 16px;
     margin-bottom: 5px;
     text-align: center;
 }
 
+/* Graph Containers */
+#graph-container, #associated-graph-container {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    position: relative;
+}
+
+#graph-container {
+    border: 3px solid grey;
+    margin-bottom: 10px;
+    max-width: 600px;
+}
+
+#associated-graph-container {
+    border: 1px solid black;
+}
+
+/* Container Divs */
+#svg-container, #graph-container-div, #associated-graph-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#svg-container {
+    flex-direction: row;
+}
+
+#associated-graph-div {
+    width: 800px;
+}
+
+/* SVG Styles */
 .circle {
     fill: steelblue;
     cursor: pointer;
+}
+
+.circle.glow, .line.active {
+    fill: orange;
+    stroke: orange;
 }
 
 .circle.active {
@@ -64,6 +73,7 @@ label {
 .circle:hover {
     fill: orangered;
 }
+
 .line {
     stroke: #666;
     stroke-width: 2px;
@@ -71,4 +81,21 @@ label {
 
 .vertex-id {
     font-size: 10px;
+}
+
+/* Specific Container Styles */
+#associated-graph-svg-container {
+    max-width: 600px;
+    padding-bottom: 10%; /* This creates an aspect ratio */
+}
+
+#side-div {
+    background-color: #c4c4c4;
+    border-radius: 5px;
+    border: 3px solid grey;
+    padding: 5px;
+}
+
+#parameter-container p {
+    text-align: center;
 }

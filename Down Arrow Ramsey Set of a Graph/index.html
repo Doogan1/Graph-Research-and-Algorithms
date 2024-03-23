@@ -3,28 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>Graph Ideal Visualizer</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1 id="title">Graph Ideal Visualizer</h1>
-    <h2 id="subtitle">Select a graph to see the set of graphs it contains as a partially ordered set!</h2>
-    <h2>Click on a vertex to see the associated subgraph of the selected graph.</h2>
-    <h2>Ctrl+Click on a vertex to highlight all vertices whose associated graph is a subgraph of the ctrl+clicked vertex.  The set of highlighted vertices is also a graph ideal.</h2>
-    <div id="svg-container">
-        <div id="graph-container-div">
-            <button id="spread-horizontal-btn">Spread Horizontally</button>
-            <button id="show-ramsey-btn">Show Ramsey Set</button>
-            <label for="horiz-spacing-slider">Horizontal Spacing<input type="range" id="horiz-spacing-slider" min="1" max="3" value="1" step="0.1">
-            </label>
-            <svg id="graph-container" width="1500" height="1500" viewBox="0 0 1500 1500"></svg>
+    <div class="container mt-5">
+    <h1 class="text-center mb-3 fs-1">Graph Ideal Visualizer</h1>
+        <div class="row-md-3 bg-info">
+            <p class="text-center">Select a graph to see the set of graphs it contains as a partially ordered set.</p>
+            <p class="text-center">Click on a vertex to see the associated subgraph of the selected graph.</p> 
+            <p class="text-center">Scroll over a vertex to highlight the edges and vertices immediately beneath the vertex.</p>
+            <p class="text-center">Ctrl+Click on a vertex to highlight all vertices whose associated graph is a subgraph of the ctrl+clicked vertex.</p>
         </div>
-        <div id="associated-graph-div">
-            <label for="associated-graph-container" id="associated-graph-container-label"></label>
-            <svg id="associated-graph-container" width="600" height="450"></svg>
+        
+        
+        <div class="row bg-dark no-gutters">
+            <div class="col-md-3 mt-3" id="side-div">
+                <form>
+                    <div id="associated-graph-svg-container">
+                        <label for="associated-graph-container" id="associated-graph-container-label"></label>
+                        <svg id="associated-graph-container" width="100%" height="100%" viewBox="0 0 500 500"></svg>
+                    </div>
+                    <div class="form-group">
+                        <label for="graph-select">Select a graph or a graph family along with parameters</label>
+                        <select class="form-control" id="graph-select" name="graph-select">
+                            <option value="petersen_graph" name="graph-select">Petersen Graph</option>
+                            <!--<option value="tutte_graph" name="graph-select">Tutte Graph</option>-->
+                            <!-- <option value="heawood_graph" name="graph-select">Heawood Graph</option> -->
+                            <option value="bull_graph" name="graph-select">Bull Graph</option>
+                            <!-- <option value="chvatal_graph" name="graph-select">Chvatal Graph</option> -->
+                            <option value="cubical_graph" name="graph-select">Cube</option>
+                            <!-- <option value="desargues_graph" name="graph-select">Desargues Graph</option> -->
+                            <option value="diamond_graph" name="graph-select">Diamond Graph</option>
+                            <!-- <option value="dodecahedral_graph" name="graph-select">Dodecahedron</option> -->
+                            <!-- <option value="frucht_graph" name="graph-select">Frucht Graph</option>
+                            <option value="hoffman_singleton_graph" name="graph-select">Hoffman-Singleton Graph</option> -->
+                            <option value="house_graph" name="graph-select">House Graph</option>
+                            <!-- <option value="icosahedral_graph" name="graph-select">Icosahedron</option>
+                            <option value="krackhardt_kite_graph" name="graph-select">Krackhardt Kite</option>
+                            <option value="moebius_kantor_graph" name="graph-select">Moebius-Kantor Graph</option> -->
+                            <option value="octahedral_graph" name="graph-select">Octahedron</option>
+                            <!-- <option value="pappus_graph" name="graph-select">Pappus Graph</option> -->
+                            <option value="sedgewick_maze_graph" name="graph-select">Sedgewick Maze</option>
+                            <option value="tetrahedral_graph" name="graph-select">Tetrahedron</option>
+                            <!-- <option value="truncated_cube_graph" name="graph-select">Truncated Cube</option>
+                            <option value="truncated_tetrahedron_graph" name="graph-select">Truncated Tetrahedron</option> -->
+                            <option value="complete_graph" name="graph-family-select" selected>Complete Graph K(n)</option>
+                            <option value="complete_bipartite_graph" name="graph-family-select">Complete Bipartite Graph K(n,m)</option>
+                        </select>
+                    </div>
+                    <div id="parameter-container">
+                        <p>Select an integer, n, from 2 to 6</p>
+                        <label for="complete-graph-parameter-1">n=<input id="complete-graph-parameter-1" type="number" min="2" max="6" value="6"/></label>
+                    </div>
+                    <button id="show-graph-btn" type="button" class = "mb-1 btn btn-primary">Show Graph Ideal</button>
+                    <button id="show-ramsey-btn" type="button" class="mb-1 btn btn-primary">Highlight Ramsey Set</button>
+                </form>
+            </div>
+            <div class="col-md-9">
+                <div id="svg-container" class="mt-3">
+                    <label for="graph-container" id="graph-container-label"></label>
+                    <svg id="graph-container" width="100%" height="100%" viewBox="0 0 600 600"></svg>
+                </div>
+            </div>
         </div>
     </div>
-    
-    
     <script src="script.js"></script>
 </body>
 </html>
